@@ -47,4 +47,9 @@ interface ILottery {
      * @dev Returns the successful user(s)
      */
     function draw(uint256 poolId) external returns (address);
+
+    /**
+     * @dev Returns the if one user has registered
+     */
+    function isRegistered(uint256 poolId, address user) external view returns (bool);
 }

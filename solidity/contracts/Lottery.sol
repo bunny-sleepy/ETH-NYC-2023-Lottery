@@ -146,4 +146,11 @@ contract Lottery is ILottery {
         _token.transfer(winnerAddress, pool.tokenAmount);
         return winnerAddress;
     }
+
+    /**
+     * @dev Returns the if one user has registered
+     */
+    function isRegistered(uint256 poolId, address user) external view override returns (bool) {
+        return userExist[poolId][user];
+    }
 }
