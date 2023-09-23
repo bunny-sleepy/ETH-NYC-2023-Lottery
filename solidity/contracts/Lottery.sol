@@ -98,6 +98,7 @@ contract Lottery is ILottery {
         });
         poolParams[maxId] = _pool;
         maxId = maxId + 1;
+        _token.transferFrom(msg.sender, address(this), tokenAmount);
         return maxId - 1;
     }
 
@@ -114,14 +115,15 @@ contract Lottery is ILottery {
         uint256 currentUserNumber = poolParams[poolId].currentUserNumber;
         require(currentUserNumber < poolParams[poolId].maxUserNumber);
         // check user DID
-        // verifyAndExecuteWorldId(poolId, worldIdInputs);
+        verifyAndExecuteWorldId(poolId, worldIdInputs);
         // check user puzzle solution
         _vdfVerifier.verify_vdf_proof(
             vdfInputs.input_random,
             vdfInputs.y,
             vdfInputs.pi,
             vdfInputs.iterations,
-            vdfInputs.prime);
+            vdfInputs.prime
+        );
         userExist[poolId][user] = true;
         userAddresses[poolId][currentUserNumber] = user;
         poolParams[poolId].currentUserNumber = currentUserNumber + 1;
@@ -136,10 +138,12 @@ contract Lottery is ILottery {
         Pool memory pool = poolParams[poolId];
         require(pool.owner == msg.sender);
         if (pool.currentUserNumber == 0) return address(0);
-        // TODO: get randomness
+        // get randomness
         bytes memory randomness = _oracle.getRandomness();
         uint256 winnerId = uint256(keccak256(abi.encode(randomness))) % pool.currentUserNumber;
-        // TODO: transfer token
-        return userAddresses[poolId][winnerId];
+        address winnerAddress = userAddresses[poolId][winnerId];
+        // transfer token
+        _token.transfer(winnerAddress, pool.tokenAmount);
+        return winnerAddress;
     }
 }
