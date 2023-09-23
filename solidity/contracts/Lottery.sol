@@ -7,11 +7,13 @@ import { ILottery } from "./Interface/ILottery.sol";
 import { IMockToken } from "./Interface/IMockToken.sol";
 import { IRandomnessOracle } from "./Interface/IRandomnessOracle.sol";
 import { IWorldID } from "./Interface/IWorldID.sol";
+import { IVDFVerifier } from "./Interface/IVDFVerifier.sol";
 
 contract Lottery is ILottery {
     IMockToken internal _token;
     IRandomnessOracle internal _oracle;
     IWorldID internal _worldID;
+    IVDFVerifier internal _vdfVerifier;
     uint256 internal maxId;
     // using ByteHasher for bytes;
     function hashToField(bytes memory value) internal pure returns (uint256) {
@@ -65,6 +67,7 @@ contract Lottery is ILottery {
     constructor(
         IMockToken token,
         IRandomnessOracle oracle,
+        IVDFVerifier vdfVerifier,
         IWorldID worldId,
         string memory appId,
         string memory actionId
@@ -73,6 +76,7 @@ contract Lottery is ILottery {
         _token = token;
         _oracle = oracle;
         _worldId = worldId;
+        _vdfVerifier = vdfVerifier;
         _externalNullifier = hashToField(abi.encodePacked(hashToField(abi.encodePacked(appId)), actionId));
     }
 
@@ -103,18 +107,24 @@ contract Lottery is ILottery {
     function register(
         address user,
         uint256 poolId,
-        WorldIDInputs calldata worldIdInputs
-    ) external override returns (bool) {
+        WorldIDInputs calldata worldIdInputs,
+        VDFInputs calldata vdfInputs
+    ) external override {
         require(userExist[poolId][user] == false);
         uint256 currentUserNumber = poolParams[poolId].currentUserNumber;
         require(currentUserNumber < poolParams[poolId].maxUserNumber);
-        // TODO: check user DID
-        verifyAndExecuteWorldId(poolId, worldIdInputs);
-        // TODO: check user puzzle solution
+        // check user DID
+        // verifyAndExecuteWorldId(poolId, worldIdInputs);
+        // check user puzzle solution
+        _vdfVerifier.verify_vdf_proof(
+            vdfInputs.input_random,
+            vdfInputs.y,
+            vdfInputs.pi,
+            vdfInputs.iterations,
+            vdfInputs.prime);
         userExist[poolId][user] = true;
         userAddresses[poolId][currentUserNumber] = user;
         poolParams[poolId].currentUserNumber = currentUserNumber + 1;
-        return true;
     }
 
     /**

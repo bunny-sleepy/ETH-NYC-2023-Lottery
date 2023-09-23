@@ -21,6 +21,14 @@ interface ILottery {
         uint256[8] proof;
     }
 
+    struct VDFInputs {
+        bytes32 input_random;
+        bytes y;
+        bytes pi;
+        uint256 iterations;
+        uint256 prime;
+    }
+
     /**
      * @dev Opens a pool, returns id
      */
@@ -33,7 +41,7 @@ interface ILottery {
     /**
      * @dev Returns whether successful or not
      */
-    function register(address user, uint256 poolId, WorldIDInputs calldata worldIdInputs) external returns (bool);
+    function register(address user, uint256 poolId, WorldIDInputs calldata worldIdInputs, VDFInputs calldata vdfInputs) external;
 
     /**
      * @dev Returns the successful user(s)

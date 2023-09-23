@@ -25,10 +25,15 @@ async function main() {
     const WorldID = await hre.ethers.getContractFactory("MockWorldID");
     let worldId = await WorldID.deploy();
     await worldId.deployed();
-    console.log("worldId Address: ", oracle.address);
+    console.log("WorldId Address: ", worldId.address);
+    // 6. Deploy the VDF
+    const VDF = await hre.ethers.getContractFactory("VDFVerifier");
+    let vdf = await VDF.deploy();
+    await vdf.deployed();
+    console.log("VDF Address: ", vdf.address);
     // 5. Deploy the lottery
     const Lottery = await hre.ethers.getContractFactory("Lottery");
-    let lottery = await Lottery.deploy(USDC.address, oracle.address, worldId.address, "12345", "1");
+    let lottery = await Lottery.deploy(USDC.address, oracle.address, vdf.address, worldId.address, "12345", "1");
     await lottery.deployed();
     console.log("Lottery address: ", lottery.address);
     // 6. Deploy a pool
