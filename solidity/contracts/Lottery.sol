@@ -106,12 +106,11 @@ contract Lottery is ILottery {
     * @dev Returns whether successful or not
     */
     function register(
-        address user,
         uint256 poolId,
         WorldIDInputs calldata worldIdInputs,
         VDFInputs calldata vdfInputs
     ) external override {
-        require(userExist[poolId][user] == false);
+        require(userExist[poolId][msg.sender] == false);
         uint256 currentUserNumber = poolParams[poolId].currentUserNumber;
         require(currentUserNumber < poolParams[poolId].maxUserNumber);
         // check user DID
@@ -124,8 +123,8 @@ contract Lottery is ILottery {
             vdfInputs.iterations,
             vdfInputs.prime
         );
-        userExist[poolId][user] = true;
-        userAddresses[poolId][currentUserNumber] = user;
+        userExist[poolId][msg.sender] = true;
+        userAddresses[poolId][currentUserNumber] = msg.sender;
         poolParams[poolId].currentUserNumber = currentUserNumber + 1;
     }
 

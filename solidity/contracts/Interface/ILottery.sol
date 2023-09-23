@@ -41,7 +41,7 @@ interface ILottery {
     /**
      * @dev Returns whether successful or not
      */
-    function register(address user, uint256 poolId, WorldIDInputs calldata worldIdInputs, VDFInputs calldata vdfInputs) external;
+    function register(uint256 poolId, WorldIDInputs calldata worldIdInputs, VDFInputs calldata vdfInputs) external;
 
     /**
      * @dev Returns the successful user(s)

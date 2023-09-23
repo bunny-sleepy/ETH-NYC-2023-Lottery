@@ -57,7 +57,7 @@ async function main() {
       // prime / l
       '0xBD63097802DC383264E04E795B649A4B50F10B7D9A6023EAC74B6DA9D49CB42D'
     ];
-    await lottery.register(deployer.address, 0, worldIdInputs, vdfInputs);
+    await lottery.register(0, worldIdInputs, vdfInputs);
     // TEST: draw
     await lottery.draw(0);
 }
