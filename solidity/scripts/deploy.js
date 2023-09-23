@@ -21,12 +21,17 @@ async function main() {
     let oracle = await RandomnessOracle.deploy();
     await oracle.deployed();
     console.log("Oracle Address: ", oracle.address);
-    // 4. Deploy the lottery
+    // 4. Deploy the worldid
+    const WorldID = await hre.ethers.getContractFactory("MockWorldID");
+    let worldId = await WorldID.deploy();
+    await worldId.deployed();
+    console.log("worldId Address: ", oracle.address);
+    // 5. Deploy the lottery
     const Lottery = await hre.ethers.getContractFactory("Lottery");
-    let lottery = await Lottery.deploy(USDC.address, oracle.address);
+    let lottery = await Lottery.deploy(USDC.address, oracle.address, worldId.address, "12345", "1");
     await lottery.deployed();
     console.log("Lottery address: ", lottery.address);
-    // 5. Deploy a pool
+    // 6. Deploy a pool
     await lottery.open(5, parseUnits("1", 22));
     await oracle.requestRandomness();
     await oracle.fulfillRandomness("0x06f5010d30d8a51fc7ab9b0e5dd28a439370b3387cec90fc1dddef86dc20d2ae");
