@@ -110,9 +110,9 @@ contract Lottery is ILottery {
         WorldIDInputs calldata worldIdInputs,
         VDFInputs calldata vdfInputs
     ) external override {
-        require(userExist[poolId][msg.sender] == false);
+        // require(userExist[poolId][msg.sender] == false, "User Exists");
         uint256 currentUserNumber = poolParams[poolId].currentUserNumber;
-        require(currentUserNumber < poolParams[poolId].maxUserNumber);
+        // require(currentUserNumber < poolParams[poolId].maxUserNumber, "Reach Max");
         // check user DID
         verifyAndExecuteWorldId(poolId, worldIdInputs);
         // check user puzzle solution
