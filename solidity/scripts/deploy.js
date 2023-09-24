@@ -26,16 +26,16 @@ async function main() {
     let worldId = await WorldID.deploy();
     await worldId.deployed();
     console.log("WorldId Address: ", worldId.address);
-    // 6. Deploy the VDF
+    // 5. Deploy the VDF
     const VDF = await hre.ethers.getContractFactory("VDFVerifier");
     let vdf = await VDF.deploy();
     await vdf.deployed();
     console.log("VDF Address: ", vdf.address);
-    // 5. Deploy the lottery
+    // 6. Deploy the lottery
     const Lottery = await hre.ethers.getContractFactory("Lottery");
     let appId = "app_staging_4173bcfe98a46030397ddd567db456b5";
     let appAction = "register";
-    let lottery = await Lottery.deploy(USDC.address, oracle.address, vdf.address, worldId.address, appId, appAction);
+    let lottery = await Lottery.deploy(USDC.address, oracle.address, vdf.address, worldId.address, appId, appAction, deployer.address);
     await lottery.deployed();
     console.log("Lottery address: ", lottery.address);
     // 6. Deploy a pool

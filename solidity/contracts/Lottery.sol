@@ -8,8 +8,10 @@ import { IMockToken } from "./Interface/IMockToken.sol";
 import { IRandomnessOracle } from "./Interface/IRandomnessOracle.sol";
 import { IWorldID } from "./Interface/IWorldID.sol";
 import { IVDFVerifier } from "./Interface/IVDFVerifier.sol";
+import "./Interface/IAxiomV2Client.sol";
 
-contract Lottery is ILottery {
+contract Lottery is ILottery, IAxiomV2Client {
+    address public immutable axiomV2QueryAddress;
     IMockToken internal _token;
     IRandomnessOracle internal _oracle;
     IWorldID internal _worldID;
@@ -36,7 +38,7 @@ contract Lottery is ILottery {
 
     function verifyAndExecuteWorldId(uint256 poolId, WorldIDInputs memory inputs) internal {
         // First, we make sure this person hasn't done this before
-        if (_nullifierHashes[poolId][inputs.nullifierHash]) revert InvalidNullifier();
+        require(_nullifierHashes[poolId][inputs.nullifierHash] == false, "Invalid Nullifier");
 
         // We now verify the provided proof is valid and the user is verified by World ID
         _worldId.verifyProof(
@@ -70,7 +72,8 @@ contract Lottery is ILottery {
         IVDFVerifier vdfVerifier,
         IWorldID worldId,
         string memory appId,
-        string memory actionId
+        string memory actionId,
+        address _axiomV2QueryAddress
     ) {
         maxId = 0;
         _token = token;
@@ -78,6 +81,7 @@ contract Lottery is ILottery {
         _worldId = worldId;
         _vdfVerifier = vdfVerifier;
         _externalNullifier = hashToField(abi.encodePacked(hashToField(abi.encodePacked(appId)), actionId));
+        axiomV2QueryAddress = _axiomV2QueryAddress;
     }
 
     /**
@@ -100,6 +104,57 @@ contract Lottery is ILottery {
         maxId = maxId + 1;
         _token.transferFrom(msg.sender, address(this), tokenAmount);
         return maxId - 1;
+    }
+
+    function axiomV2Callback(
+        uint64 sourceChainId,
+        address callerAddr,
+        bytes32 querySchema,
+        bytes32 queryHash,
+        bytes32[] calldata axiomResults,
+        bytes calldata callbackExtraData
+    ) external {
+        require(msg.sender == axiomV2QueryAddress, "AxiomV2Client: caller must be axiomV2QueryAddress");
+        emit AxiomV2Call(sourceChainId, callerAddr, querySchema, queryHash);
+
+        _validateAxiomV2Call(sourceChainId, callerAddr, querySchema);
+        _axiomV2Callback(sourceChainId, callerAddr, querySchema,queryHash, axiomResults, callbackExtraData);
+    }
+
+    function _validateAxiomV2Call(
+        uint64 sourceChainId,
+        address callerAddr,
+        bytes32 querySchema
+    ) internal {
+        // testnet only
+        require(sourceChainId == 5 || sourceChainId == 31337);
+    }
+
+    function _axiomV2Callback(
+        uint64 sourceChainId,
+        address callerAddr,
+        bytes32 querySchema,
+        bytes32 queryHash,
+        bytes32[] calldata axiomResults,
+        bytes calldata callbackExtraData
+    ) internal {
+        //  axiomResults.length is 2
+        uint256 poolId;
+        bytes memory _callbackExtraData = callbackExtraData;
+        assembly {
+            poolId := mload(add(_callbackExtraData, 0x20))
+        }
+        address user = address(uint160(uint256(axiomResults[0])));
+        // Register user address
+        // allow user to gain access to lottery again if the use has not registered
+        if (!userExist[poolId][user]) {
+            Pool memory pool = poolParams[poolId];
+            pool.maxUserNumber = pool.maxUserNumber + 1;
+            userExist[poolId][user] = true;
+            userAddresses[poolId][pool.currentUserNumber] = msg.sender;
+            pool.currentUserNumber = pool.currentUserNumber + 1;
+            poolParams[poolId] = pool;
+        }
     }
 
     /**
