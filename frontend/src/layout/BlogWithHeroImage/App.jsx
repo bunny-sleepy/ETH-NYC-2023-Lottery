@@ -52,7 +52,7 @@ export const Main = () => (
                   md: 'md',
                 }}
               >
-                “FairDraw” - The Blockchain-powered Lottery Platform.
+                “FairDrop” - The Blockchain-powered Lottery Platform.
               </Text>
               <Heading
                 size={useBreakpointValue({

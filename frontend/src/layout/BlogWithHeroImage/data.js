@@ -1,82 +1,88 @@
 export const posts = [
   {
     id: '1',
-    title: 'How to write a great blog post',
+    title: 'Join ETHNewYork, get 86th Floor Observatory of Empire State Building',
     excerpt:
-      'Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id.',
+      'Participate in the Empire State Building ticket lottery based on the deposit (0.05 ETH) data.',
     image:
-      'https://images.unsplash.com/photo-1524492449090-a4e289316d9c?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1694&q=80',
+      'https://pbs.twimg.com/profile_banners/883476092832681984/1691754376/1500x500',
     tags: [
       {
         label: 'Community',
         color: 'blue',
       },
-      {
-        label: 'Tutorials',
-        color: 'green',
-      },
+
     ],
-    publishedAt: 'Januar 28, 2023',
+    publishedAt: 'September 23, 2023',
     author: {
-      name: 'Busola Banks',
+      name: 'ETHGlobal',
       avatarUrl: 'https://tinyurl.com/2p8fy9ym',
     },
   },
   {
     id: '2',
-    title: 'Sekiro™: Shadows Die Twice',
+    title: 'Fellow Frank, get 50USDT',
     excerpt:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.',
-    image: 'https://cdn.akamai.steamstatic.com/steam/apps/814380/header.jpg?t=1603904569',
+      'Frank is a well-known investor. Follow him on twitter and you will have the opportunity to receive 50 USDT.',
+    image: 'https://pbs.twimg.com/profile_images/1618871387917271049/FTwgky_e_400x400.jpg',
     tags: [
+      
       {
-        label: 'Community',
-        color: 'blue',
-      },
-      {
-        label: 'Single-player',
+        label: 'KOL',
         color: 'red',
       },
+      {
+        label: 'USDT',
+        color: 'green',
+      }
     ],
-    publishedAt: 'December 29, 2022',
+    publishedAt: 'September 15, 2023',
     author: {
-      name: 'Samy Tom',
+      name: 'Frank Zhang',
       avatarUrl: 'https://tinyurl.com/2p8h98w8',
     },
   },
   {
     id: '3',
-    title: 'STAR WARS™: The Old Republic™',
+    title: 'Mantle Users POAP',
     excerpt:
-      'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
-    image: 'https://cdn.akamai.steamstatic.com/steam/apps/1286830/header.jpg?t=1645090351',
+      'Deploying smart contracts on Mantle in the past or present.',
+    image: 'https://image.blocktempo.com/2023/08/preview-750x375.jpg',
     tags: [
       {
         label: 'Community',
         color: 'blue',
       },
+      {
+        label: 'NFT',
+        color: 'gray',
+      },
     ],
-    publishedAt: 'November 30, 2022',
+    publishedAt: 'August 30, 2023',
     author: {
-      name: 'Angelina Gates',
+      name: 'Mantle X EduDAO',
       avatarUrl: 'https://tinyurl.com/2p98t7nh',
     },
   },
   {
     id: '4',
-    title: 'Far Cry® 5',
+    title: 'EduDAO Students, get 10 USDT',
     excerpt:
-      'Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id.',
-    image: 'https://cdn.akamai.steamstatic.com/steam/apps/552520/header.jpg?t=1628209646',
+      'Participated in Edudao activities in the past or present or received scholarships from Edudao.',
+    image: 'https://pbs.twimg.com/profile_images/1470977630946181122/rXTRvqJV_400x400.jpg',
     tags: [
       {
-        label: 'Single-player',
-        color: 'yellow',
+        label: 'Community',
+        color: 'blue',
+      },
+      {
+        label: 'USDT',
+        color: 'green',
       },
     ],
-    publishedAt: 'October 31, 2022',
+    publishedAt: 'August 20, 2023',
     author: {
-      name: 'Busola Banks',
+      name: 'EduDAO',
       avatarUrl: 'https://tinyurl.com/2p8fy9ym',
     },
   },

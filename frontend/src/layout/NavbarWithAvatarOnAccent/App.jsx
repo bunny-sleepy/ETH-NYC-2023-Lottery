@@ -59,7 +59,7 @@ export const Nav = () => {
               {isDesktop && (
                 <ButtonGroup variant="ghost-on-accent" spacing="1">
                   <Button aria-current="page" fontSize="1.25rem">
-                    FairDraw
+                    FairDrop
                   </Button>
                 </ButtonGroup>
               )}

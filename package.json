@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/bunny-sleepy/ETH-NYC-2023-Lottery#readme",
   "dependencies": {
+    "@remix-project/remixd": "^0.6.17",
     "hardhat": "^2.14.0",
     "mocha": "^10.2.0"
   },
