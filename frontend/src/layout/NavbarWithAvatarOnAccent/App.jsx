@@ -77,7 +77,11 @@ export const Nav = () => {
                     credential_types={credential_types}
                     walletConnectProjectId="3d2b7c418720bc2030074f63fe134ff5"
                   >
-                    {({ open }) => <button onClick={open}>Click me</button>}
+                    {({ open }) => (
+                      <Button onClick={open} colorScheme="gray">
+                        VERIFY YOUR WORLD ID
+                      </Button>
+                    )}
                   </IDKitWidget>
                   {/* <IconButton
                     icon={<FiSettings fontSize="1.25rem" />}
